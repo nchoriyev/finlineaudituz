@@ -1,0 +1,87 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Website</title>
+  <link rel="stylesheet" href="{% static 'css/lessons.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+        <button id="toggle-btn">☰</button>
+    </div>
+    <div class="user-info">
+        <button id="topbar-btn" class="user-button">
+            <img src="{{ avatar_image }}" alt="Avatar"
+                 onerror="this.onerror=null; this.src='{% static 'default-avatar.png' %}'" class="avatar-img">
+            <span class="user-name">{% if full_name %}{{ full_name }}{% else %}Foydalanuvchi{% endif %}</span>
+        </button>
+
+        <div id="popover" class="popover hidden">
+            <div class="popover-content">
+                <a href="{% url 'profile' %}" class="popover-item">
+                    🧑‍💼 {% if full_name %}{{ full_name }}{% else %}Ism Familiya{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="popover-item logout-btn">
+                    🚪 Chiqish
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Navbar on the left -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="{% url 'home' %}"><span class="icon"><img src="{% static 'side_menu/home-icon.png' %}" alt=""></span><span class="text">Dashboard</span></a></li>
+        <li id="lessons"><a href="#"><span class="icon"><img src="{% static 'side_menu/video-gray.png' %}" alt=""></span><span class="text">Video darsliklar</span></a></li>
+        <li><a href="{% url 'profile' %}"><span class="icon"><img src="{% static 'side_menu/profile-menu.png' %}" alt=""></span><span class="text">Profilim</span></a></li>
+        <li><a href="{% url 'contact' %}"><span class="icon"><img src="{% static 'side_menu/contacts-icon.png' %}" alt=""></span><span class="text">Kontaktlar</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Yopish">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="box" id="box">
+            <h1>Mening kurslarim</h1>
+            <div class="my-courses">
+                {% for i in user_categories %}
+                <a href="{% url 'category_detail' i.slug %}">
+                    <button>{{ i }}</button>
+                </a>
+                {% empty %}
+                <p>Hozircha sizda faol kurslar mavjud emas!</p>
+                {% endfor %}
+            </div>
+            <h1>Barcha kurslar</h1>
+            <div class="all-courses">
+                {% for categories in categories %}
+                <button>{{ categories }}</button>
+                {% empty %}
+                <p>Darslar yo'q</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+  </div>
+  <script src="{% static 'scripts/script.js' %}"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,255 @@
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Website</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    .user-info {
+        position: relative;
+        display: inline-block;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
+        padding: 10px 15px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .user-button:hover {
+        background-color: #f1f1f1;
+        transform: translateY(-2px);
+    }
+
+    .avatar-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 12px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .user-name {
+        font-size: 15px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    /* Popover asosiy stil */
+    .popover {
+        position: absolute;
+        top: 55px;
+        right: 0;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+
+    .popover.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .popover-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .popover-item {
+        padding: 12px 16px;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s ease;
+        font-size: 14px;
+    }
+
+    .popover-item:hover {
+        background-color: #f4f4f4;
+    }
+
+    .logout-btn {
+        color: #e63946;
+        font-weight: bold;
+    }
+
+    .logout-btn:hover {
+        background-color: #fce4e4;
+    }
+
+    .my-subscriptions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .subscription-btn {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 100%;
+        max-width: 300px;
+        font-size: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .subscription-btn img {
+        width: 40px;
+        height: 40px;
+        margin-right: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .sub-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sub-title {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .date {
+        font-size: 14px;
+        opacity: 0.8;
+    }
+
+    .subscription-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .subscription-btn:hover img {
+        transform: rotate(10deg);
+    }
+
+    .subscription-btn:active {
+        transform: scale(0.95);
+    }
+
+</style>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+        <button id="toggle-btn">☰</button>
+    </div>
+    <div class="user-info">
+        <button id="topbar-btn" class="user-button">
+            <img src="{{ avatar_image }}" alt="Avatar"
+                 onerror="this.onerror=null; this.src='{% static 'default-avatar.png' %}'" class="avatar-img">
+            <span class="user-name">{% if full_name %}{{ full_name }}{% else %}Foydalanuvchi{% endif %}</span>
+        </button>
+
+        <div id="popover" class="popover hidden">
+            <div class="popover-content">
+                <a href="{% url 'profile' %}" class="popover-item">
+                    🧑‍💼 {% if full_name %}{{ full_name }}{% else %}Ism Familiya{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="popover-item logout-btn">
+                    🚪 Chiqish
+                </a>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <div class="container">
+    <!-- Navbar on the left -->
+      <div class="navbar-backdrop"></div>
+    <nav class="navbar">
+      <ul>
+        <li id="home"><a href="#"><span class="icon"><img src="{% static 'side_menu/home-gray.png' %}" alt=""></span><span class="text">Dashboard</span></a></li>
+        <li><a href="{% url 'category' %}"><span class="icon"><img src="{% static 'side_menu/video-icon.png' %}" alt=""></span><span class="text">Video darsliklar</span></a></li>
+        <li><a href="{% url 'profile' %}"><span class="icon"><img src="{% static 'side_menu/profile-menu.png' %}" alt=""></span><span class="text">Profilim</span></a></li>
+        <li><a href="{% url 'contact' %}"><span class="icon"><img src="{% static 'side_menu/contacts-icon.png' %}" alt=""></span><span class="text">Kontaktlar</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+      {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    <main class="content">
+        <div class="box">
+            <h1>Yangiliklar</h1>
+            <div class="cards">
+                {% for item in news %}
+                <div class="card">
+                    <div class="swiper-slide">
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                    </div>
+                    <div class="card-content">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.text|truncatewords:20 }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Hozircha yangiliklar mavjud emas.</p>
+                {% endfor %}
+            </div>
+            <div>
+            <h1>Obunalar</h1>
+                <div class="my-subscriptions">
+                    {% for i in subscriptions %}
+                        <a href="{% url 'category' %}">
+                            <button class="subscription-btn">
+                                <img src="{% static 'icons/video-icon.png' %}" alt="ic">
+                                <div class="sub-info">
+                                    <span class="sub-title">{{ i }}</span>
+                                    <span class="date">Tugash sanasi: {{ end_date }}</span>
+                                </div>
+                            </button>
+                        </a>
+                    {% empty %}
+                        <p>Hozircha sizda faol kurslar mavjud emas!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+  </div>
+  <script src="{% static 'scripts/script.js' %}"></script>
+</body>
+</html>
+{% endblock %}

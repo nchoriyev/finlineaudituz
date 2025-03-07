@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bizning Kontaktlar</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+        <button id="toggle-btn">☰</button>
+    </div>
+    <div class="user-info">
+        <button id="topbar-btn" class="user-button">
+            <img src="{{ avatar_image }}" alt="Avatar"
+                 onerror="this.onerror=null; this.src='{% static 'default-avatar.png' %}'" class="avatar-img">
+            <span class="user-name">{% if full_name %}{{ full_name }}{% else %}Foydalanuvchi{% endif %}</span>
+        </button>
+
+        <div id="popover" class="popover hidden">
+            <div class="popover-content">
+                <a href="{% url 'profile'  %}" class="popover-item">
+                    🧑‍💼 {% if full_name %}{{ full_name }}{% else %}Ism Familiya{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="popover-item logout-btn">
+                    🚪 Chiqish
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Navbar on the left -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="{% url 'home' %}"><span class="icon"><img src="{% static 'side_menu/home-icon.png' %}" alt=""></span><span class="text">Dashboard</span></a></li>
+        <li><a href="{% url 'category' %}"><span class="icon"><img src="{% static 'side_menu/video-icon.png' %}" alt=""></span><span class="text">Video darsliklar</span></a></li>
+        <li><a href="{% url 'profile' %}"><span class="icon"><img src="{% static 'side_menu/profile-menu.png' %}" alt=""></span><span class="text">Profilim</span></a></li>
+        <li id="contacts"><a href="#"><span class="icon"><img src="{% static 'side_menu/contacts-gray.png' %}" alt=""></span><span class="text">Kontaktlar</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="content">
+        <div class="box">
+            <h1>Bizning kontaktlarimiz:</h1>
+            {% for contact in contacts %}
+            <div class="contacts">
+                <b>Kompaniya nomi: </b>
+                <span>{{ contact.company_name }}</span>
+                <b>1-telefon raqam: </b>
+                <span>{{ contact.telephone_number1 }}</span>
+                <b>2-telefon raqam: </b>
+                <span>{{ contact.telephone_number2 }}</span>
+                <b>Instagram: </b>
+                <a href="{{ contact.instagram }}" class="links">
+                  <img src="{% static 'icons/insta_logo.jpg' %}" alt="insta">
+                </a>
+                <b>Telegram: </b>
+                <a href="{{ contact.telegram }}" class="links">
+                  <img src="{% static 'icons/tg-logo.webp' %}" alt="tg">
+                </a>
+                <b>Facebook: </b>
+                <a href="{{ contact.facebook }}" class="links">
+                  <img src="{% static 'icons/facebook-logo.webp' %}" alt="fb">
+                </a>
+                <b>YouTube: </b>
+                <a href="{{ contact.youtube }}" class="links">
+                  <img src="{% static 'icons/yt-logo.png' %}" alt="yt" id="yt">
+                </a>
+                <b>Joylashuv: </b>
+                <span>{{ contact.location }}</span>
+                <b>Manzil: </b>
+                <span>{{ contact.address_name }}</span>
+            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d749.5146123429942!2d69.18550589418153!3d41.2858323652959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae89005d18a3df%3A0xbcbcf2b87efcacd7!2sBuxgateriya%20kurs%20%22FinLineAudit.uz%22!5e0!3m2!1suz!2s!4v1740223825814!5m2!1suz!2s" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            {% endfor %}
+        </div>
+    </main>
+  </div>
+  <script src="{% static 'scripts/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+#category span{
+    color: grey;
+}
+
+#my-video {
+    width: 50vw;
+}
+
+.frame {
+    margin: 3vh 0 3vh 5vw;
+    width: 60vw;
+    height: 70vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 3vh 0;
+    row-gap: 3vh;
+    width: 60%;
+    font-size: 1.2rem;
+}
+
+form input {
+    height: 5vh;
+    font-size: 1.2rem;
+}
+
+form button, a button {
+    align-self: flex-end;
+    width: 15%;
+    height: 3vh;
+    font-size: 1rem;
+    color: white;
+    background-color: #1d2d5b;
+    border: 1px solid #1d2d5b;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+form button:hover, a button:hover {
+    background-color: #2f478f;
+    transform: scale(1.05);
+}
+
+@media (max-width: 1080px) {
+    #my-video {
+        width: 65vw;
+    }
+
+    form {
+        width: 80%;
+    }
+}
+
+@media (max-width: 853px) {
+    #my-video {
+        width: 100%;
+    }
+
+    .frame {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    p {
+        font-size: larger;
+    }
+}
+
+@media (max-width: 768px) {
+    form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 460px) {
+    form button {
+        width: 27%;
+        height: 4vh;
+    }
+
+    a button {
+        width: fit-content;
+    }
+}
+
+@media (max-width: 932px) and (orientation: landscape) {
+    .frame {
+        height: 150vh;
+    }
+
+    form button, form input, a button {
+        height: 8vh;
+    }
+}

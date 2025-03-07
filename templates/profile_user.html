@@ -1,0 +1,74 @@
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Website</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+        <button id="toggle-btn">☰</button>
+    </div>
+    <div class="user-info">
+        <button id="topbar-btn" class="user-button">
+            <img src="{{ avatar_image }}" alt="Avatar"
+                 onerror="this.onerror=null; this.src='{% static 'default-avatar.png' %}'" class="avatar-img">
+            <span class="user-name">{% if full_name %}{{ full_name }}{% else %}Foydalanuvchi{% endif %}</span>
+        </button>
+
+        <div id="popover" class="popover hidden">
+            <div class="popover-content">
+                <a href="{% url 'profile' %}" class="popover-item">
+                    🧑‍💼 {% if full_name %}{{ full_name }}{% else %}Ism Familiya{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="popover-item logout-btn">
+                    🚪 Chiqish
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Navbar on the left -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="{% url 'home' %}"><span class="icon"><img src="{% static 'side_menu/home-icon.png' %}" alt=""></span><span class="text">Dashboard</span></a></li>
+        <li><a href="{% url 'category' %}"><span class="icon"><img src="{% static 'side_menu/video-icon.png' %}" alt=""></span><span class="text">Video darsliklar</span></a></li>
+        <li id="pro"><a href="#"><span class="icon"><img src="{% static 'side_menu/profile-gray.png' %}" alt=""></span><span class="text">Profilim</span></a></li>
+        <li><a href="{% url 'contact' %}"><span class="icon"><img src="{% static 'side_menu/contacts-icon.png' %}" alt=""></span><span class="text">Kontaktlar</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="content">
+        <div class="box">
+            <div class="profile">
+                <div class="image">
+                    <img src="{{ avatar_image }}" alt="img" id="profi">
+                    <button onclick="window.location.href='{% url 'upload-profile-image' %}'">
+                        <img src="{% static 'icons/change-icon.png' %}" alt="change" id="change">
+                    </button>
+                </div>
+
+                <div class="info">
+                    <p><b>F.I.Sh: </b> {{ full_name }}</p>
+                    <p><b>Username: </b> {{user.username}}</p>
+                    <p><b>Email: </b> {{ user.email }}</p>
+                    <button onclick="window.location.href='{% url 'change-password' %}'">Parolni almashtirish</button>
+                </div>
+            </div>
+        </div>
+    </main>
+  </div>
+  <script src="{% static 'scripts/script.js' %}"></script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basic Website</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/video.css' %}">
+    <style>
+        .comment-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .comment-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .comment-text {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .comment-rating {
+            font-size: 18px;
+            color: #FFD700;
+        }
+
+        .star.empty {
+            color: #ccc;
+        }
+
+        /* Komment formasi dizayni */
+        .comment-form {
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            resize: none;
+        }
+
+        .comment-form select {
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .comment-form button {
+            margin-top: 10px;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment-form button:hover {
+            background: #218838;
+        }
+
+        .comment-form {
+            max-width: 800px; /* Kompyuter ekranlarida maksimal kenglik */
+            width: 100%; /* Telefon va kichik ekranlarda to‘liq moslashadi */
+            margin: 20px auto; /* Markazga joylash */
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form .form-group {
+            margin-bottom: 10px;
+        }
+
+        .comment-form label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .comment-form .form-control {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .comment-form textarea {
+            min-height: 100px; /* Matn maydonini juda uzun bo‘lib ketishiga yo‘l qo‘ymaydi */
+            resize: vertical; /* Foydalanuvchi o'lchamini o'zgartira olishi uchun */
+        }
+
+        .comment-form .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; /* Tugma to‘liq kenglikda */
+        }
+
+        .comment-form .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        /* Mobil qurilmalar uchun moslashuv */
+        @media screen and (max-width: 768px) {
+            .comment-form {
+                max-width: 90%; /* Telefon ekranida juda keng bo‘lmasligi uchun */
+                padding: 10px; /* Ichki bo‘shliqni kamaytirish */
+            }
+
+            .comment-form .form-control {
+                font-size: 13px; /* Matn maydonlarini kichikroq qilish */
+                padding: 5px;
+            }
+
+            .comment-form .btn-primary {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+<body>
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="logo">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+        <button id="toggle-btn">☰</button>
+    </div>
+    <div class="user-info">
+        <button id="topbar-btn" class="user-button">
+            <img src="{{ avatar_image }}" alt="Avatar"
+                 onerror="this.onerror=null; this.src='{% static 'default-avatar.png' %}'" class="avatar-img">
+            <span class="user-name">{% if full_name %}{{ full_name }}{% else %}Foydalanuvchi{% endif %}</span>
+        </button>
+
+        <div id="popover" class="popover hidden">
+            <div class="popover-content">
+                <a href="{% url 'profile' %}" class="popover-item">
+                    🧑‍💼 {% if full_name %}{{ full_name }}{% else %}Ism Familiya{% endif %}
+                </a>
+                <a href="{% url 'logout' %}" class="popover-item logout-btn">
+                    🚪 Chiqish
+                </a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Navbar on the left -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="{% url 'home' %}"><span class="icon"><img src="{% static 'side_menu/home-icon.png' %}" alt=""></span><span class="text">Dashboard</span></a></li>
+        <li id="{% url 'category' %}"><a href="{% url 'category' %}"><span class="icon"><img src="{% static 'side_menu/video-gray.png' %}" alt=""></span><span class="text">Video darsliklar</span></a></li>
+        <li><a href="{% url 'profile' %}"><span class="icon"><img src="{% static 'side_menu/profile-menu.png' %}" alt=""></span><span class="text">Profilim</span></a></li>
+        <li><a href="{% url 'contact' %}"><span class="icon"><img src="{% static 'side_menu/contacts-icon.png' %}" alt=""></span><span class="text">Kontaktlar</span></a></li>
+      </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main class="content">
+        <div class="box" id="box">
+            <h1>{{ lesson.lesson_name }}</h1>
+            <div style="position: relative; display: inline-block;">
+               <video id="my-video" class="video-js" controls controlsList="nodownload" disablePictureInPicture>
+                    <source src="{{ lesson.video.url }}" type="video/mp4" />
+                </video>
+                <div id="watermark"
+                     style="position: absolute;
+                            top: 50px;
+                            left: 50px;
+                            color: grey;
+                            padding: 10px 20px;
+                            font-size: 24px;
+                            font-weight: bold;
+                            border-radius: 10px;
+                            white-space: nowrap;">
+                    {{ user.username }}
+                </div>
+            </div>
+            <p>{{ lesson.description }}</p>
+            <a href="{{ lesson.material.url }}" download="goodfile">
+              <button>Yuklab olish</button>
+            </a>
+            <p>Mavzuga doir materiallar &uarr;</p>
+            <iframe src="{{ lesson.theme_link }}" class="frame"></iframe>
+            <h2>Sharh qoldirish</h2>
+                <form method="post" class="comment-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="{{ form.text.id_for_label }}">Sharh</label>
+                        {{ form.text }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.rating.id_for_label }}">Reyting (1-5)</label>
+                        {{ form.rating }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Yuborish</button>
+                </form>
+              <h3>Kommentlar:</h3>
+                <ul class="comment-list">
+                    {% for comment in comments %}
+                        <li class="comment-item">
+                            <div class="comment-header">
+                                <strong>{{ comment.comment_User.username }}</strong>
+                                <span class="comment-date">{{ comment.created_at|date:"Y-m-d H:i" }}</span>
+                            </div>
+                            <p class="comment-text">{{ comment.text }}</p>
+                            <div class="comment-rating">
+                                {% with comment.rating|default:0 as full_stars %}
+                                    <!-- To‘liq yulduzlar -->
+                                    {% for _ in "12345" %}
+                                        {% if forloop.counter <= full_stars %}
+                                            <span class="star full">★</span>
+                                        {% else %}
+                                            <span class="star empty">☆</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </div>
+                        </li>
+                    {% empty %}
+                        <p>Hali hech qanday komment yo'q.</p>
+                    {% endfor %}
+                </ul>
+        </div>
+    </main>
+  </div>
+  <script src="{% static 'scripts/script.js' %}"></script>
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+            const watermark = document.getElementById("watermark");
+            const video = document.getElementById("my-video");
+
+            let x = 50, y = 50;
+            let dx = 0.3, dy = 0.3;
+            let animationFrameId = null;
+            let isSeeking = false;
+
+            function moveWatermark() {
+                if (!video.paused && !isSeeking) {
+                    const videoRect = video.getBoundingClientRect();
+                    const wmWidth = watermark.offsetWidth;
+                    const wmHeight = watermark.offsetHeight;
+
+                    x += dx;
+                    y += dy;
+
+                    // Bounce off edges
+                    if (x + wmWidth > videoRect.width || x < 0) dx = -dx;
+                    if (y + wmHeight > videoRect.height || y < 0) dy = -dy;
+
+                    watermark.style.left = `${x}px`;
+                    watermark.style.top = `${y}px`;
+
+                    animationFrameId = requestAnimationFrame(moveWatermark);
+                }
+            }
+
+            function stopWatermarkAnimation() {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            }
+
+            function startWatermarkAnimation() {
+                if (!animationFrameId && !isSeeking) moveWatermark();
+            }
+
+            function resetWatermarkPosition() {
+                const videoRect = video.getBoundingClientRect();
+                x = Math.min(x, videoRect.width - watermark.offsetWidth);
+                y = Math.min(y, videoRect.height - watermark.offsetHeight);
+            }
+
+            // **Handle Play/Pause**
+            video.addEventListener("play", startWatermarkAnimation);
+            video.addEventListener("pause", stopWatermarkAnimation);
+
+            // **Fix Fullscreen Issues**
+            document.addEventListener("fullscreenchange", function () {
+                setTimeout(() => {
+                    resetWatermarkPosition();
+                    if (!video.paused && !isSeeking) startWatermarkAnimation();
+                }, 100);
+            });
+
+            // **Fix Seeking (Dragging Seek Bar)**
+            video.addEventListener("seeking", function () {
+                isSeeking = true;
+                stopWatermarkAnimation();
+            });
+
+            video.addEventListener("seeked", function () {
+                isSeeking = false;
+                if (!video.paused) startWatermarkAnimation();
+            });
+
+            // **Fix Left/Right Arrow Key Seeking**
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "ArrowRight") {
+                    video.currentTime += 10; // Fix: Increase instead of resetting
+                } else if (event.key === "ArrowLeft") {
+                    video.currentTime -= 10; // Fix: Decrease instead of resetting
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

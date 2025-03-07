@@ -1,0 +1,102 @@
+#lessons span{
+    color: grey;
+}
+
+.box h1 {
+    color: #1d2d5b;
+    font-size: 2.3em;
+}
+
+.my-courses, .all-courses, .courses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5vw;
+    row-gap: 3vh;
+    margin-bottom: 10vh;
+}
+
+.videos-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3vh;
+    margin: 5vh 2vw;
+}
+
+.my-courses button, .all-courses button, .courses button {
+    font-size: 1.5rem;
+    padding: 1vh 5px;
+    background-color: aliceblue;
+    border: 1px solid rgb(181, 209, 233);
+    border-radius: 1vh;
+    transition: all 0.3s ease-in-out;
+}
+
+.videos-list button {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 70%;
+    height: 5vh;
+    font-size: 1.5em;
+    border: 1px solid #1d2d5b;
+    border-radius: 5px;
+    background-color: aliceblue;
+    padding: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.videos-list button img {
+    width: 1.5em;
+    margin: 0 1vw;
+}
+
+.my-courses button, .courses button {
+    cursor: pointer;
+    width: 100%;
+}
+
+.my-courses button:hover, .courses button:hover, .videos-list button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: rgb(242, 248, 253);
+}
+
+.all-courses button {
+    cursor: not-allowed;
+}
+
+@media (max-width: 1080px) {
+    .box h1 {
+        font-size: 2em;
+    }
+
+    .my-courses button, .all-courses button, .courses button {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .my-courses, .all-courses, .courses{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .videos-list button {
+        width: 80%;
+        padding: 3px;
+    }
+}
+
+@media (max-width: 460px) {
+    .my-courses, .all-courses, .courses{
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .my-courses button, .all-courses button, .courses button {
+        font-size: 1rem;
+    }
+
+    .videos-list button {
+        width: 95%;
+        font-size: 1.2em;
+    }
+}

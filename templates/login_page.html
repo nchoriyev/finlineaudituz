@@ -1,0 +1,244 @@
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .main {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      height: 100vh;
+      background-color: #f3f4f6;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding: 0;
+    }
+
+    .logo-container {
+      width: 50%;
+      height: 100vh;
+      flex: 1;
+      text-align: center;
+      background-color: #1d2d5b;
+      padding-top: 10%;
+    }
+
+    .logo-container img {
+      margin-top: -2vh;
+    }
+
+    .box {
+      height: 100vh;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      row-gap: 1vh;
+    }
+
+    form {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .box img {
+      margin-left: auto;
+      margin-right: auto;
+      width: 15vh;
+    }
+
+    .title {
+      margin-top: 5%;
+      text-align: center;
+      color: #1d2d5b;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    label {
+      width: 50%;
+      display: block;
+      color: #374151;
+      margin-top: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #1d2d5b;
+      border: none;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #314a95;
+    }
+
+    @media (max-width: 1180px) {
+      body {
+        max-height: 100vh;
+      }
+
+      .logo-container img {
+        width: 35vw;
+        margin-top: 27vh;
+      }
+    }
+
+    @media (max-width: 1024px) and (max-height: 600px) {
+      .logo-container {
+        padding: 0;
+      }
+
+      .logo-container img {
+        margin-top: -10vh;
+      }
+    }
+
+    @media (width: 1024px) {
+      .logo-container img {
+        margin-top: 25vh;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .logo-container {
+        display: none;
+      }
+
+      .box {
+        width: 100%;
+      }
+
+      .box form {
+        width: 80%;
+      }
+    }
+
+    .log-btn {
+      display: flex;
+      align-items: center;
+      background-color: white;
+      color: black;
+      border: 1px solid rgb(170, 170, 170);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      margin-top: 5vh;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .log-btn:hover {
+      transform: scale(1.05);
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .log-btn img {
+      width: 1rem;
+      margin: 0 1vh;
+    }
+
+    .message-box {
+      position: fixed;
+      z-index: 15;
+      left: 43%;
+      margin: 10px auto;
+      padding: 5px 15px;
+      max-width: 70%;
+      font-size: 1.2em;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: slideIn 1s forwards;
+      color: #fff;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .message-box.success-message {
+      background-color: #28a745;
+    }
+
+    .message-box.error-message {
+      background-color: #dc3545;
+    }
+
+    /* Animation for Message Box */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hide Message Box After 3 Seconds */
+    .message-box.hide {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message-box {% if message.tags == 'success' %}success-message{% else %}error-message{% endif %}" id="messageBox">
+                    {{ message }}
+            </div>
+            <script>
+                setTimeout(() => {
+                    const messageBox = document.getElementById("messageBox");
+                    if (messageBox) {
+                        messageBox.classList.add('hide');
+                    }
+                }, 3000);
+            </script>
+        {% endfor %}
+    {% endif %}
+    <div class="main">
+      <div class="logo-container">
+          <img src="{% static 'login_images/accountant-female.png' %}" alt="Logo">
+      </div>
+      <div class="box">
+        <img src="{% static 'login_images/fla-logo.png' %}" alt="logo">
+            <h2 class="title">Kirish</h2>
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <label for="username">Login</label>
+            <input type="text" name="username" id="username" placeholder="Loginni kiriting" required>
+
+            <label for="password">Parol</label>
+            <input type="password" name="password" id="password" placeholder="Parolni kiriting" required>
+
+            <button type="submit">Kirish</button>
+          </form>
+      </div>
+    </div>
+</body>
+</html>
+{% endblock %}
