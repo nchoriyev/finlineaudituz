@@ -20,7 +20,7 @@ SECRET_KEY = 'django-insecure-u+&_=@b&swo=8$u=_d8o^07zzv65tko8@hbtg_fwgcal2s!!)6
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["34.59.10.206"]
+ALLOWED_HOSTS = ["35.184.191.67"]
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "finline",
         "USER": "finline",
         "PASSWORD": "Aa9022560",
